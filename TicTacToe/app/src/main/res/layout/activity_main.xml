@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    tools:context=".UI.MainActivity">
+
+
+
+    <Button
+        android:id="@+id/btnSinglePlayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Single Player"
+        android:textColor="@color/black"
+        android:background="@drawable/design_player_chance"
+        android:padding="20dp"
+        android:layout_margin="20dp"
+        />
+
+
+    <Button
+        android:id="@+id/btntwoPlayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Two Player"
+        android:textColor="@color/black"
+        android:background="@drawable/design_player_chance"
+        android:padding="20dp"
+        android:layout_margin="20dp"
+        />
+
+
+    <Button
+        android:id="@+id/btnStartGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:textColor="@color/black"
+        android:background="@drawable/design_player_chance"
+        android:padding="20dp"
+        android:layout_margin="20dp"
+        />
+
+
+
+
+</LinearLayout>
