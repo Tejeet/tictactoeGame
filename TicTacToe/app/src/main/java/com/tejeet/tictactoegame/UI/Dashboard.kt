@@ -1,11 +1,17 @@
 package com.tejeet.tictactoegame.UI
 
 import android.content.Intent
+import android.media.MediaPlayer
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.tejeet.tictactoegame.Data.AppPreferences
 import com.tejeet.tictactoegame.R
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
@@ -30,13 +36,22 @@ class Dashboard : AppCompatActivity() {
 
     private var boxCount = 0
 
+    var VIBRATION_SETTING : Boolean =  false
+    var MEDIA_SOUND : Boolean =  false
+
+    var mMediaPlayer: MediaPlayer? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        changeChance()
+        AppPreferences.init(this)
 
+        VIBRATION_SETTING = AppPreferences.is_vibration
+        MEDIA_SOUND = AppPreferences.is_sound
+
+        changeChance()
 
 
         boxr1c1.setOnClickListener {
@@ -58,6 +73,7 @@ class Dashboard : AppCompatActivity() {
                 changeChance()
                 boxCount++
             } else {
+                vibrateSense()
                 Toast.makeText(this, "Please Check Other position", Toast.LENGTH_SHORT).show();
             }
 
@@ -83,6 +99,7 @@ class Dashboard : AppCompatActivity() {
                 changeChance()
                 boxCount++
             } else {
+                vibrateSense()
                 Toast.makeText(this, "Please Check Other position", Toast.LENGTH_SHORT).show();
             }
 
@@ -107,6 +124,7 @@ class Dashboard : AppCompatActivity() {
                 changeChance()
                 boxCount++
             } else {
+                vibrateSense()
                 Toast.makeText(this, "Please Check Other position", Toast.LENGTH_SHORT).show();
             }
 
@@ -132,6 +150,7 @@ class Dashboard : AppCompatActivity() {
                 changeChance()
                 boxCount++
             } else {
+                vibrateSense()
                 Toast.makeText(this, "Please Check Other position", Toast.LENGTH_SHORT).show();
             }
 
@@ -156,6 +175,7 @@ class Dashboard : AppCompatActivity() {
                 changeChance()
                 boxCount++
             } else {
+                vibrateSense()
                 Toast.makeText(this, "Please Check Other position", Toast.LENGTH_SHORT).show();
             }
 
@@ -180,6 +200,7 @@ class Dashboard : AppCompatActivity() {
                 changeChance()
                 boxCount++
             } else {
+                vibrateSense()
                 Toast.makeText(this, "Please Check Other position", Toast.LENGTH_SHORT).show();
             }
 
@@ -205,6 +226,7 @@ class Dashboard : AppCompatActivity() {
                 changeChance()
                 boxCount++
             } else {
+                vibrateSense()
                 Toast.makeText(this, "Please Check Other position", Toast.LENGTH_SHORT).show();
             }
 
@@ -230,6 +252,7 @@ class Dashboard : AppCompatActivity() {
                 changeChance()
                 boxCount++
             } else {
+                vibrateSense()
                 Toast.makeText(this, "Please Check Other position", Toast.LENGTH_SHORT).show();
             }
 
@@ -255,6 +278,7 @@ class Dashboard : AppCompatActivity() {
                 changeChance()
                 boxCount++
             } else {
+                vibrateSense()
                 Toast.makeText(this, "Please Check Other position", Toast.LENGTH_SHORT).show();
             }
 
@@ -310,6 +334,12 @@ class Dashboard : AppCompatActivity() {
             alertDialog.show()
         }
 
+        btnSetting.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+
+
 
     }
 
@@ -343,6 +373,8 @@ class Dashboard : AppCompatActivity() {
 
 
     public fun changeChance() {
+
+        playSound()
 
         if (playerChance) {
             playerChance = false;
@@ -414,7 +446,8 @@ class Dashboard : AppCompatActivity() {
                 finish()
 
                 break
-            } else if (line.equals("111")) {
+            }
+            else if (line.equals("111")) {
                 tvwinner.text = "Player 1 Win"
 
                 val intent = Intent(this, WinnerShow::class.java)
@@ -458,5 +491,36 @@ class Dashboard : AppCompatActivity() {
 
 
         }
+    }
+
+    private fun vibrateSense() {
+
+        if (VIBRATION_SETTING){
+
+            Log.d(TAG, "VIBRATING")
+
+            val v = getSystemService(VIBRATOR_SERVICE) as Vibrator
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                v.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE))
+            } else {
+                //deprecated in API 26
+                v.vibrate(100)
+            }
+        }
+    }
+
+    fun playSound() {
+
+        if (MEDIA_SOUND){
+            if (mMediaPlayer == null) {
+                mMediaPlayer = MediaPlayer.create(this, R.raw.changeside)
+                mMediaPlayer!!.isLooping = false
+                mMediaPlayer!!.start()
+            }
+            else {
+                mMediaPlayer!!.start()
+            }
+        }
+
     }
 }
